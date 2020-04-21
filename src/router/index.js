@@ -13,12 +13,12 @@ Vue.use(VueRouter)
     component: Dashboard
   },
   {
-    path: '/project',
+    path: '/projects',
     name: 'Project',
     component: Project
   },
   {
-    path: '/team',
+    path: '/teams',
     name: 'Team',
     component: Team
   },
