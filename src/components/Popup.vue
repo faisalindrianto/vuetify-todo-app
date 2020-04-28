@@ -36,7 +36,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="primary" text @click="submit" class="mr-3">Add Project</v-btn>
+          <v-btn color="primary" text @click="submit" class="mr-3" :loading="loading">Add Project</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+  import db from '@/fb'
   export default {
     data(){
       return{
@@ -54,13 +55,27 @@
         menu2: false,
         inputRules: [
           v => v.length >= 3 || 'Minimal 3 karakter slur'
-        ]
+        ],
+        loading: false
       }
     },
     methods: {
       submit(){
        if(this.$refs.form.validate()){
-         console.log(this.title, this.content)
+         this.loading = true
+         const project = {
+           title: this.title,
+           content: this.content,
+           due: this.due,
+           person: 'Faisal',
+           status: 'ongoing'
+         }
+
+         db.collection('projects').add(project).then(() => {
+           this.loading = false
+           this.dialog = false
+           this.$emit('projectAdded')
+         })
        }
       }
     }
